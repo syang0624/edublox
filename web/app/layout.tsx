@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Learning Universe",
+  title: "Edublox",
   description:
-    "Upload a study PDF and turn it into a personalized cosmic Roblox mission.",
+    "Upload any study material and turn it into a playable Roblox mission.",
 };
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-# Learning Universe -- Storyline Bible
+# Edublox -- Storyline Bible
 
 ## The Setting
 

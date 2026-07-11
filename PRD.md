@@ -1,4 +1,4 @@
-# PRD — AI Learning Universe on Roblox
+# PRD — Edublox: AI-Powered Learning on Roblox
 
 **Implementation spec. Written so an AI coding agent can build this end-to-end in one pass.**
 
@@ -215,7 +215,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routes import upload, generate, config, npc_chat, report
 
-app = FastAPI(title="Learning Universe API")
+app = FastAPI(title="Edublox API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -950,9 +950,9 @@ export default function Home() {
     return (
         <main className="min-h-screen flex items-center justify-center p-8 bg-slate-950 text-slate-100">
             <div className="max-w-xl w-full text-center">
-                <h1 className="text-4xl font-bold mb-2">Learning Universe</h1>
+                <h1 className="text-4xl font-bold mb-2">Edublox</h1>
                 <p className="text-slate-300 mb-8">
-                    Upload a study PDF. We'll turn it into a personalized cosmic
+                    Upload any study PDF and we'll turn it into a playable
                     Roblox mission.
                 </p>
 
@@ -971,8 +971,8 @@ export default function Home() {
                             Drop your PDF here, or click to browse
                         </div>
                         <div className="text-sm text-slate-400 mt-2">
-                            Max 25MB · Any school subject · Universe-themed
-                            missions
+                            Max 25 MB · Any school subject · Learn by
+                            playing
                         </div>
                     </label>
                 )}

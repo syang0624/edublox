@@ -31,10 +31,10 @@ export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-xl w-full text-center">
-        <h1 className="text-4xl font-bold mb-2">Learning Universe</h1>
+        <h1 className="text-4xl font-bold mb-2">Edublox</h1>
         <p className="text-slate-300 mb-8">
-          Upload a study PDF. We&apos;ll turn it into a personalized cosmic
-          Roblox mission.
+          Upload any study PDF and we&apos;ll turn it into a playable Roblox
+          mission.
         </p>
 
         {status === "idle" && (
@@ -51,8 +51,8 @@ export default function Home() {
               Drop your PDF here, or click to browse
             </div>
             <div className="text-sm text-slate-400 mt-2">
-              Max 25 MB &middot; Any school subject &middot; Universe-themed
-              missions
+              Max 25 MB &middot; Any school subject &middot; Learn by
+              playing
             </div>
           </label>
         )}
