@@ -61,6 +61,20 @@ FastAPI + Python. All routes under `/api`; canonical data contract in
 | `POST /api/report` | Mission events; milestones written to EverOS |
 | `GET /api/report/{session_id}` | Session progress summary |
 
+### Persistence (Butterbase)
+
+Butterbase is the app's backend twice over: its **AI gateway** serves every
+LLM call, and its **database** (via the auto-generated data API) is the
+durable copy of operational state — uploads, plans, sessions, and report
+events — behind a write-through in-memory cache
+([`storage.py`](backend/app/services/storage.py) +
+[`butterbase_db.py`](backend/app/services/butterbase_db.py)). A backend
+restart or redeploy no longer breaks live Roblox launch links or session
+reports; if Butterbase is unreachable, the backend degrades gracefully to
+in-memory-only. The division of labor with EverOS is deliberate:
+**Butterbase stores what the app needs to run; EverOS remembers the
+learner.**
+
 ### Run locally
 
 ```bash
