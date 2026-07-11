@@ -11,7 +11,7 @@ A four-part system with a persistent learner-memory layer:
 1. **Web app** (Next.js, deployed through Butterbase Edge SSR) — user uploads a PDF, previews a generated mission plan, and clicks "Launch in Roblox"
 2. **Backend** (FastAPI, Python) — extracts PDF text, calls the Butterbase AI gateway to generate a Mission Plan JSON, serves that JSON to Roblox at play time, and handles NPC chat turns
 3. **Roblox place** (Luau) — one published place with a pre-built Universe scene that loads a Mission Plan from the backend and executes it as playable content
-4. **Memory** (EverOS Cloud) — recalls learner preferences, misconceptions, and prior progress before generation/chat, then stores meaningful learning interactions after each session
+4. **Memory** (EverOS Cloud) — stores the session data from each Roblox game session (NPC chat turns via `/api/npc-chat`, mission milestone events via `/api/report`) as raw transcripts, which EverOS auto-extracts into a durable learner **profile** (persistent traits) and **episodic memory** (what happened). Both are recalled — learner preferences, misconceptions, and prior progress — before plan generation and every NPC chat turn
 
 **The presentation theme is Universe only: space station, alien planet, and asteroid field. Source PDFs may cover any school subject, but every mission is presented through this cosmic setting. Do not introduce unrelated historical-world locations, characters, props, colors, or copy.**
 
@@ -282,6 +282,8 @@ def events_for_session(session_id: str):
 ### 4.2a `services/everos_memory.py`
 
 EverOS is the only durable learner-memory layer. Before plan generation and every NPC response, search it for the small amount of context relevant to the current task. After meaningful interactions, write the learner/NPC turns back to the same `learner_id` and `session_id`. EverOS failure must degrade gracefully: log it, continue without recalled context, and never block the Roblox session.
+
+**What EverOS stores:** the session data from each Roblox game session — NPC chat turns (written by `/api/npc-chat`) and mission milestone events (written by `/api/report`) — sent as raw turn-by-turn messages under the learner's `learner_id` and the game `session_id`. Do not hand-write memory entries: EverOS's extraction pipeline distills these transcripts into the learner's **`profile`** (persistent traits) and **`episodic_memory`** (what happened). That is why `recall()` searches `memory_types: ["episodic_memory", "profile"]` — both the accumulated user profile and the per-session history are available at recall time.
 
 Use the EverOS v1 API with bearer authentication. Keep the adapter small so SDK or response-shape changes are isolated to one file.
 

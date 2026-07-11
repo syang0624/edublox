@@ -58,6 +58,7 @@ demo/
   - Strip markdown fences from LLM output before parsing
 - [ ] **`services/npc_chat_service.py`** — PRD 4.10: roleplay prompt, correct-answer detection via JSON response
 - [ ] **`services/everos_memory.py`** — PRD 4.2a: recall (hybrid search) + async remember_turns
+  - EverOS stores the session data from each Roblox game session (NPC chat turns + mission milestone events) as raw transcripts, plus the user profile it auto-extracts from them; recall searches both (`memory_types: ["episodic_memory", "profile"]`)
 
 ### Routes
 - [ ] **`routes/upload.py`** — PRD 4.3: accept PDF, validate size/type, extract text, truncate to 15k chars
@@ -103,7 +104,7 @@ demo/
 5. `GET /api/config?plan_id=...` returns plan + session_id; demo plan (`demo_solar_system`) is always available
 6. `POST /api/npc-chat` returns in-character NPC reply with `is_correct_answer` signal
 7. NPC never reveals the answer directly; gives hints after 2+ wrong attempts
-8. EverOS memory is recalled before generation and NPC chat; turns are written after interactions
+8. EverOS stores each Roblox game session's data (NPC chat turns + mission milestone events) and the user profile it extracts from them; memory (profile + episodic) is recalled before generation and NPC chat, and turns are written after interactions
 9. EverOS failure degrades gracefully — logged warning, no crash
 10. Puzzle validation is server-side only (correct_order check)
 11. Butterbase is the only LLM path; no credentials exposed to web or Roblox
