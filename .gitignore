@@ -28,6 +28,10 @@ Thumbs.db
 # IDE/Editor
 .vscode/
 .idea/
+.claude/
+.codex/
+/AGENTS.md
+/CLAUDE.md
 *.swp
 *.swo
 *~

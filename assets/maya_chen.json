@@ -1,0 +1,306 @@
+{
+  "learner": {
+    "user_id": "maya_chen",
+    "display_name": "Maya Chen",
+    "age": 13,
+    "grade": "7th grade math",
+    "note_for_builders": "Cross-session hooks embedded on purpose: (1) the SAME sign error -3-4=-1 recurs in W1, W3, W5 (persistent misconception); (2) anxiety -> one-word answers / 'can we stop' is her early-warning shutdown signal; (3) 'why...' questions appear only once she feels safe; (4) improper-fraction numerator/denominator flip in W2; (5) can't turn a sentence into an equation in W4. Feed all 5 sessions in order; EverOS will auto-derive her profile + episodic memory. Demo tip: replay W1, then jump to W5 and show your tool recalling the number-line fix before she even asks."
+  },
+  "sessions": [
+    {
+      "user_id": "maya_chen",
+      "session_id": "maya_w1_intro_negatives",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1781276400000,
+          "content": "Hi Maya! No test today, promise — just us figuring stuff out together. Warm-up: what's 5 + 3?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781276418000,
+          "content": "8"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781276425000,
+          "content": "Nice and quick. How about 12 - 5?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781276440000,
+          "content": "7, easy"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781276448000,
+          "content": "You're flying. Let's try one with a negative: -3 - 4."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781276495000,
+          "content": "um... -1?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781276505000,
+          "content": "Not quite — the trick is which way you move from -3. Want to see it drawn out?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781276560000,
+          "content": "ok"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781276575000,
+          "content": "Picture a number line. Start at -3. Subtracting 4 means step 4 to the LEFT. Where do you land?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781276640000,
+          "content": "can we stop"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781276650000,
+          "content": "Absolutely. We covered a lot — the positive stuff you nailed. We'll pick up the negatives next time, no rush. Proud of you for showing up, Maya."
+        }
+      ]
+    },
+    {
+      "user_id": "maya_chen",
+      "session_id": "maya_w2_fractions",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1781881200000,
+          "content": "Hey Maya! Today: fractions, with pizza. You order a pizza cut into 4 slices and eat 2. How much did you eat?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781881230000,
+          "content": "half! 2 out of 4"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781881240000,
+          "content": "Yes! 2/4 = 1/2. You've got this instantly."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781881260000,
+          "content": "pizza makes it easy lol"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781881270000,
+          "content": "Then we keep the pizza. Here's a trickier one: how do we write 'one and a half pizzas' as a single fraction?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781881320000,
+          "content": "um 2/3?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781881332000,
+          "content": "Close thinking, but let's count slices. Each pizza = 2 halves. One and a half pizzas = 3 halves. Which number goes on top — the 3 or the 2?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1781881370000,
+          "content": "the 2 on top? 2/3"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781881382000,
+          "content": "This is the tricky part: the TOP counts how many slices you have (3), the BOTTOM is the size of each slice (halves = 2). So it's 3/2. You flipped them — super common."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781881420000,
+          "content": "oh ok so top is how many i have"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781881430000,
+          "content": "Exactly. You're getting it. Good session, Maya."
+        }
+      ]
+    },
+    {
+      "user_id": "maya_chen",
+      "session_id": "maya_w3_negatives_again",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1782486000000,
+          "content": "Welcome back Maya! Let's revisit those negatives from a couple weeks ago. Take your time: -3 - 4 = ?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1782486035000,
+          "content": "-1"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782486045000,
+          "content": "Same spot as last time, and that's totally fine — it means the number line will help. Start at -3. Subtracting 4 = step 4 to the LEFT. Try it."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782486110000,
+          "content": "ohhh so -7"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782486120000,
+          "content": "YES. -7. See how moving left makes it click?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1782486145000,
+          "content": "why does minus mean go left though"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782486158000,
+          "content": "Great question — that curiosity means you feel safe, love it. Left is 'less', right is 'more'. Subtracting makes a number smaller, so you head toward the small end: left. Let's do two more."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782486200000,
+          "content": "-5 - 2... that's -7 too?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782486212000,
+          "content": "Perfect. Start -5, four... sorry, two steps left, land on -7. You just self-checked. That's 3 out of 5 right today — big jump."
+        }
+      ]
+    },
+    {
+      "user_id": "maya_chen",
+      "session_id": "maya_w4_word_problems",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1783090800000,
+          "content": "Hi Maya! Word problems today. Here's one: 'Sam had some stickers. He gave away 6 and now has 9. How many did he start with?'"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783090840000,
+          "content": "15"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783090850000,
+          "content": "Right! How'd you know?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783090870000,
+          "content": "cuz 9 plus the 6 he gave away"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783090880000,
+          "content": "Exactly the right thinking. Now can you write that as an equation with a letter for the unknown?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783090930000,
+          "content": "i dont know how to do the letter thing"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783090942000,
+          "content": "No problem. Call the start 'x'. He gave away 6, so x - 6, and that equals 9. So x - 6 = 9."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783090990000,
+          "content": "i can do the math in my head but the equation is confusing. im bad at this"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783091002000,
+          "content": "Hey — you already SOLVED it correctly. Turning words into symbols is a separate skill and it's brand new. That's not being bad, that's being early."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783091040000,
+          "content": "ok. im bad at the equation part"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783091052000,
+          "content": "Fair — the equation part, for now. We'll build it slowly next time. You did real math today, Maya."
+        }
+      ]
+    },
+    {
+      "user_id": "maya_chen",
+      "session_id": "maya_w5_negatives_review",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1783695600000,
+          "content": "Hey Maya, good to see you! Quick check-in, no pressure: -3 - 4?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695640000,
+          "content": "-1... wait"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695650000,
+          "content": "You caught yourself — what are you picturing?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695680000,
+          "content": "the number line. start at -3 go left 4. -7"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695690000,
+          "content": "You reminded YOURSELF this time. That's huge, Maya. The number line is officially your tool now."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695720000,
+          "content": "yeah i just imagine walking left haha"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695730000,
+          "content": "Whatever makes it stick. One more: -8 - 5?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695760000,
+          "content": "-13. walked left 5 from -8"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695770000,
+          "content": "Nailed it, and you explained your reasoning. Best mood I've seen from you — you're building real confidence here."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695800000,
+          "content": "maybe im a tiny bit a math person"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695810000,
+          "content": "A tiny bit today, more next week. That's how it works."
+        }
+      ]
+    }
+  ]
+}

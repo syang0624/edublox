@@ -1,0 +1,205 @@
+{
+  "learner": {
+    "user_id": "daniel_okafor",
+    "display_name": "Daniel Okafor",
+    "age": 34,
+    "grade": "Adult reskiller — English + workplace skills",
+    "note_for_builders": "Cross-session hooks embedded on purpose: (1) verb-tense error — overuses present perfect for a finished past action ('I have work here since 3 years' / 'I have send') — recurs in W1, W2, W4; (2) drops or misuses articles (a/an/the) — recurs W1 and W4, i.e. NOT consolidated; (3) abstract explanations lose him, job-anchored examples land — visible in the W3 Excel session; (4) W4 has a real ATTENDANCE GAP: he missed the planned session (overtime) and returns two days later — a memory-aware build should do a QUICK RE-ENTRY ('last time we practiced shift-swap emails, want to pick that back up?') instead of starting over, and should notice the W1 article errors resurfacing. Feed all 4 sessions in order. Demo tip: after loading, open a W5 session cold and show your tool resuming mid-thread AND catching the recurring tense error because it remembers the pattern."
+  },
+  "sessions": [
+    {
+      "user_id": "daniel_okafor",
+      "session_id": "daniel_w1_assessment",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1781708400000,
+          "content": "Hi Daniel, welcome! Tell me a bit about your work and what you want to get out of this."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781708460000,
+          "content": "I work in warehouse. I have work here since 3 years and I want move to logistics, like dispatch coordinator. I talk fine but my writing is not good."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781708475000,
+          "content": "Your spoken English is really clear — that'll serve you well with a dispatch team. Let's write a short intro email to a new supervisor, the kind you'd actually send. Give it a try."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781708600000,
+          "content": "Hello, my name is Daniel. I have work in warehouse since 3 years. I have experience with shipment and I want learn dispatch. I am hard worker and I have send many order without mistake. Thank you."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781708615000,
+          "content": "Solid content — clear and confident. Two things to polish. First, 'I have work here since 3 years' should be 'I have worked here for 3 years' (or just 'I've worked here for 3 years'). 'Since' is for a start point (since 2021); 'for' is for a length of time (for 3 years)."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781708680000,
+          "content": "ok for 3 years. and I have send?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781708690000,
+          "content": "Good eye — 'I have sent'. Second thing: small words are missing. 'in warehouse' -> 'in a warehouse' or 'in the warehouse'; 'experience with shipment' -> 'experience with shipments'. Those little a/an/the words are tricky and we'll keep working on them."
+        },
+        {
+          "role": "user",
+          "timestamp": 1781708750000,
+          "content": "the a/an/the is confusing for me. in my language we dont have this"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1781708760000,
+          "content": "That makes complete sense, and it's the most common thing for people whose first language skips articles. We'll build it up with real emails, not grammar drills. Great first session, Daniel."
+        }
+      ]
+    },
+    {
+      "user_id": "daniel_okafor",
+      "session_id": "daniel_w2_work_emails",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1782313200000,
+          "content": "Hey Daniel! Today let's write a real one: you need to ask a coworker to swap shifts on Friday. Write it like you'd actually send it."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782313320000,
+          "content": "Hi Marcus, I have talked to the supervisor yesterday and he said is ok if we swap. Can you take my Friday shift? I take your Monday. Thank you."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782313335000,
+          "content": "This is genuinely usable — clear and polite. One recurring pattern: 'I have talked to the supervisor yesterday.' When you say WHEN it happened (yesterday), use simple past: 'I talked to the supervisor yesterday.'"
+        },
+        {
+          "role": "user",
+          "timestamp": 1782313400000,
+          "content": "ah so if I say yesterday, no 'have'. just talked."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782313412000,
+          "content": "Exactly. 'Have talked' when there's no specific time ('I have talked to him about it'); 'talked' when you name the time ('I talked to him yesterday'). You've got the rule now."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782313470000,
+          "content": "this is useful because I send emails like this real. also 'he said is ok'?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782313482000,
+          "content": "Nice catch — 'he said it's ok' (or 'he said it was ok'). You're spotting your own gaps now, that's the goal. When errors are tied to emails you'll actually send, they stick better."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782313540000,
+          "content": "yes I like this way. abstract grammar is boring for me haha"
+        }
+      ]
+    },
+    {
+      "user_id": "daniel_okafor",
+      "session_id": "daniel_w3_excel_basics",
+      "messages": [
+        {
+          "role": "assistant",
+          "timestamp": 1782918000000,
+          "content": "Excel day, Daniel. I've got a mock shipment sheet: columns for Order ID, Boxes, Weight. First, add up all the boxes. Ever used SUM?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1782918080000,
+          "content": "no but let me try. =SUM and I pick the column?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782918092000,
+          "content": "Exactly right — =SUM(B2:B20). Try it. Now sort the sheet by Weight, heaviest first."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782918160000,
+          "content": "ok got the sum. sorting was easy too, I clicked the column and sort. this is fun actually"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782918172000,
+          "content": "You're picking this up fast. Next: absolute vs relative references. When you copy a formula down, cell references shift automatically — that's 'relative'. Sometimes you want one to stay locked — that's 'absolute', written with dollar signs like $C$1."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782918240000,
+          "content": "I dont understand. relative absolute... what shifts?"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782918252000,
+          "content": "Let me make it concrete. Say cell C1 holds the shipping rate per kg, $2. In column D you compute cost = weight x rate. If you write =B2*C1 and drag it down, the C1 slides to C2, C3 — wrong, the rate's gone. So you 'lock' it: =B2*$C$1. The lock keeps pointing at the rate no matter how far you drag."
+        },
+        {
+          "role": "user",
+          "timestamp": 1782918330000,
+          "content": "OHHH lock the rate cell. now I get it. the dollar sign is a lock. why nobody say it like that before"
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1782918342000,
+          "content": "Ha — 'lock this cell' is all it really means. You had it instantly once it was a shipment example. That's how we'll do the tricky stuff: real sheet, real numbers."
+        }
+      ]
+    },
+    {
+      "user_id": "daniel_okafor",
+      "session_id": "daniel_w4_return_after_absence",
+      "messages": [
+        {
+          "role": "user",
+          "timestamp": 1783695600000,
+          "content": "sorry I missed our session. I had overtime all week, very tired. I am back now."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695615000,
+          "content": "No problem at all, Daniel — overtime happens, glad you're back. Short one today since you're tired. Last time we nailed Excel locking cells; before that, work emails. Want a quick email one to warm back up?"
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695680000,
+          "content": "yes ok. I need write email to tell manager I am interest in the coordinator position. can you check? Hello, I am Daniel from warehouse. I am interest in coordinator position. I have work with shipments and I am reliable person. Please tell me a information about it. Thank you."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695695000,
+          "content": "Great to jump right back in. Strong, direct email. A few of the familiar patterns showed up, so let's tidy them: 'I am interest' -> 'I am interested'; 'I have work with shipments' -> 'I have worked with shipments'; and the little words — 'I am Daniel from warehouse' -> 'from the warehouse', 'a information' -> 'information' (no article, it's uncountable)."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695780000,
+          "content": "the a/an/the again. I keep doing this one."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695792000,
+          "content": "You do, and that's fine — articles are the last thing to click for a lot of learners. Here's a keeper rule for 'information': it's uncountable, so never 'a information' and never 'informations'. Say 'some information' or just 'information'. We'll keep chipping at articles every session until they're automatic."
+        },
+        {
+          "role": "user",
+          "timestamp": 1783695850000,
+          "content": "ok. some information. thank you, short session is good today, I am tired."
+        },
+        {
+          "role": "assistant",
+          "timestamp": 1783695860000,
+          "content": "Perfect place to stop. You came back after a rough week and still shipped a real email — that consistency is what gets you the coordinator role. See you next time."
+        }
+      ]
+    }
+  ]
+}
