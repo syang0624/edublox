@@ -20,10 +20,19 @@ const GENERATING_STEPS = [
 ];
 const STEP_MS = 850;
 
+// Staged beat between clicking "Launch" and the Roblox redirect, so the
+// hand-off reads as deliberate instead of an abrupt page jump.
+const LAUNCHING_STEPS = [
+  "Packaging your mission plan…",
+  "Sending it to Roblox…",
+  "Launching your world…",
+];
+
 export default function PreviewClient({ planId }: { planId: string }) {
   const [plan, setPlan] = useState<any>(null);
   const [memory, setMemory] = useState<Record<string, string> | null>(null);
   const [genStep, setGenStep] = useState(0);
+  const [launchStep, setLaunchStep] = useState<number | null>(null);
   const placeId = process.env.NEXT_PUBLIC_ROBLOX_PLACE_ID;
   const isDemo = planId in PREBAKED_PLANS;
 
@@ -93,6 +102,40 @@ export default function PreviewClient({ planId }: { planId: string }) {
     JSON.stringify({ plan_id: planId })
   );
   const launchUrl = `https://www.roblox.com/games/start?placeId=${placeId}&launchData=${launchData}`;
+
+  const startLaunch = () => {
+    if (launchStep !== null) return;
+    setLaunchStep(0);
+    LAUNCHING_STEPS.forEach((_, i) => {
+      if (i > 0) setTimeout(() => setLaunchStep(i), i * STEP_MS);
+    });
+    setTimeout(() => {
+      window.location.href = launchUrl;
+    }, LAUNCHING_STEPS.length * STEP_MS);
+  };
+
+  if (launchStep !== null) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-center w-full max-w-sm px-8">
+          <div className="animate-pulse text-xl">
+            {LAUNCHING_STEPS[launchStep]}
+          </div>
+          <div className="mt-6 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-indigo-400 rounded-full transition-all duration-700 ease-out"
+              style={{
+                width: `${((launchStep + 1) / LAUNCHING_STEPS.length) * 100}%`,
+              }}
+            />
+          </div>
+          <div className="text-sm text-slate-400 mt-3">
+            Opening Roblox — choose “Open” if your browser asks
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen p-8">
@@ -178,12 +221,12 @@ export default function PreviewClient({ planId }: { planId: string }) {
           </section>
         )}
 
-        <a
-          href={launchUrl}
-          className="mt-8 block text-center bg-indigo-600 hover:bg-indigo-500 text-white text-xl font-semibold py-4 rounded-xl transition"
+        <button
+          onClick={startLaunch}
+          className="mt-8 block w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white text-xl font-semibold py-4 rounded-xl transition"
         >
           Launch in Roblox
-        </a>
+        </button>
       </div>
     </main>
   );
