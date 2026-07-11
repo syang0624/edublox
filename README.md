@@ -111,9 +111,9 @@ never blocks gameplay.
 To start a demo with weeks of realistic history, preload a learner card:
 
 ```bash
-cd assets
 export EVEROS_API_KEY=<your key>
-python load_learner.py leo_carter.json   # Leo, 10 — loves space; great fit for the solar-system demo
+backend/.venv/bin/python assets/load_learner.py assets/leo_carter.json
+# Leo, 10 — loves space; great fit for the solar-system demo
 ```
 
 ## Demo script
