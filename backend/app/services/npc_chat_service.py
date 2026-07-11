@@ -1,4 +1,5 @@
 import json
+import re
 from app.services import llm, storage, everos_memory
 from app.config import settings
 from app.models.schemas import NpcChatRequest, NpcChatResponse
@@ -53,7 +54,7 @@ def reply(req: NpcChatRequest) -> NpcChatResponse:
     user = f"{convo}\nPLAYER: {req.player_message}\n\nRespond as JSON."
 
     raw = llm.complete(system=system, user=user,
-                       model=settings.LLM_MODEL_SMALL, max_tokens=200)
+                       model=settings.LLM_MODEL_SMALL, max_tokens=400)
     raw = raw.strip()
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
@@ -62,9 +63,24 @@ def reply(req: NpcChatRequest) -> NpcChatResponse:
         reply_text = data["reply"]
         is_correct = bool(data.get("correct", False))
     except Exception:
-        # Fallback: treat as plain text, not correct
-        reply_text = raw[:200]
-        is_correct = False
+        # Salvage a truncated/malformed JSON response so raw JSON never
+        # reaches the player.
+        reply_match = re.search(r'"reply"\s*:\s*"((?:[^"\\]|\\.)*)', raw)
+        correct_match = re.search(r'"correct"\s*:\s*(true|tru|tr|t\b)', raw)
+        if reply_match:
+            try:
+                reply_text = json.loads(f'"{reply_match.group(1)}"')[:200]
+            except Exception:
+                reply_text = reply_match.group(1)[:200]
+            is_correct = correct_match is not None
+        else:
+            reply_text = raw[:200]
+            is_correct = False
+
+    # The prompt's [CORRECT] token is a signal, not player-facing copy.
+    if "[CORRECT]" in reply_text:
+        is_correct = True
+        reply_text = reply_text.replace("[CORRECT]", "").strip()
 
     everos_memory.remember_turns(
         learner_id,
