@@ -1,11 +1,8 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { uploadPdf, generatePlan } from "@/lib/api";
 
 export default function Home() {
-  const router = useRouter();
   const [status, setStatus] = useState<
     "idle" | "uploading" | "generating" | "error"
   >("idle");
@@ -22,7 +19,9 @@ export default function Home() {
       const { upload_id } = await uploadPdf(file);
       setStatus("generating");
       const { plan_id } = await generatePlan(upload_id, learnerId);
-      router.push(`/preview/${plan_id}`);
+      // Use a query parameter so every generated plan can open through the
+      // single /preview/ HTML page on Butterbase's static hosting.
+      window.location.assign(`/preview/?plan_id=${encodeURIComponent(plan_id)}`);
     } catch (e: unknown) {
       setStatus("error");
       setError(e instanceof Error ? e.message : "Something went wrong");
@@ -58,13 +57,15 @@ export default function Home() {
               </div>
             </label>
 
-            <Link
-              href="/preview/demo_newton_laws"
-              prefetch
+            {/* A real document navigation is intentional: Butterbase serves
+                this as a static export and cannot answer Next RSC requests. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href="/preview/?plan_id=demo_newton_laws"
               className="mt-6 block w-full bg-slate-800 border border-cyan-700 hover:bg-slate-700 text-cyan-200 font-semibold py-3 rounded-xl transition"
             >
               ▶ Demo: Newton&apos;s Laws of Motion
-            </Link>
+            </a>
             <div className="text-xs text-slate-500 mt-2">
               Personalized mission plan for Kai (11) — no upload needed
             </div>

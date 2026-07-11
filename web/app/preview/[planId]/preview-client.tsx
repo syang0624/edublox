@@ -2,12 +2,45 @@
 import { useEffect, useState } from "react";
 import demoNewtonPlan from "@/lib/demo_newton_laws_plan.json";
 
+type SimulationBox = {
+  label: string;
+  mass_kg: number;
+};
+
+type Mission = {
+  mission_id: string;
+  type: "dialogue" | "puzzle" | "exploration" | "simulation";
+  location: string;
+  prompt?: string;
+  npc_name?: string;
+  boxes?: SimulationBox[];
+};
+
+type MissionPlan = {
+  title: string;
+  topic: string;
+  objectives: string[];
+  missions: Mission[];
+};
+
+type ConfigResponse = {
+  plan: MissionPlan;
+  learner_id?: string;
+};
+
+type MemoryResponse = {
+  memory: Record<string, string>;
+};
+
 // Pre-baked demo plans render instantly with no backend round-trip —
 // presentation-proof even if the backend is cold. Keep the JSON in sync
 // with backend/app/demo/ (source of truth); learner must match
 // DEMO_PLANS in backend/app/main.py.
-const PREBAKED_PLANS: Record<string, { plan: any; learnerId: string }> = {
-  demo_newton_laws: { plan: demoNewtonPlan, learnerId: "kai_tanaka" },
+const PREBAKED_PLANS: Record<string, { plan: MissionPlan; learnerId: string }> = {
+  demo_newton_laws: {
+    plan: demoNewtonPlan as MissionPlan,
+    learnerId: "kai_tanaka",
+  },
 };
 
 // Short staged reveal for pre-baked demo plans: the plan is already in the
@@ -29,23 +62,39 @@ const LAUNCHING_STEPS = [
 ];
 
 export default function PreviewClient({ planId }: { planId: string }) {
-  const [plan, setPlan] = useState<any>(null);
+  const [plan, setPlan] = useState<MissionPlan | null>(null);
   const [memory, setMemory] = useState<Record<string, string> | null>(null);
   const [genStep, setGenStep] = useState(0);
   const [launchStep, setLaunchStep] = useState<number | null>(null);
+  const [launchError, setLaunchError] = useState("");
+  const [loadError, setLoadError] = useState("");
   const placeId = process.env.NEXT_PUBLIC_ROBLOX_PLACE_ID;
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const isDemo = planId in PREBAKED_PLANS;
+  const backendConfigurationError =
+    !isDemo && !backendUrl
+      ? "Backend is not configured. Set NEXT_PUBLIC_BACKEND_URL in Butterbase and redeploy."
+      : "";
 
   useEffect(() => {
     // Memory reveal: show what EverOS actually remembers about this
     // learner — the same context the plan generator was given.
-    const fetchMemory = (learnerId: string) =>
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/memory/${learnerId}`
-      )
-        .then((r) => r.json())
-        .then((m) => setMemory(m.memory))
-        .catch(() => {});
+    const fetchMemory = async (learnerId: string) => {
+      if (!backendUrl) return;
+      try {
+        const response = await fetch(
+          `${backendUrl.replace(/\/$/, "")}/api/memory/${learnerId}`
+        );
+        if (!response.ok) {
+          throw new Error(`Memory request failed (${response.status})`);
+        }
+        const data = (await response.json()) as MemoryResponse;
+        setMemory(data.memory);
+      } catch {
+        // Memory is an enhancement; the pre-baked demo remains usable when
+        // EverOS or the backend is unavailable.
+      }
+    };
 
     const prebaked = PREBAKED_PLANS[planId];
     if (prebaked) {
@@ -61,15 +110,43 @@ export default function PreviewClient({ planId }: { planId: string }) {
       );
       return () => timers.forEach(clearTimeout);
     }
+    if (!backendUrl) {
+      return;
+    }
     fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/config?plan_id=${planId}`
+      `${backendUrl.replace(/\/$/, "")}/api/config?plan_id=${encodeURIComponent(planId)}`
     )
-      .then((r) => r.json())
-      .then((d) => {
+      .then((r) => {
+        if (!r.ok) throw new Error(`Mission plan request failed (${r.status})`);
+        return r.json();
+      })
+      .then((d: ConfigResponse) => {
         setPlan(d.plan);
         if (d.learner_id) fetchMemory(d.learner_id);
-      });
-  }, [planId]);
+      })
+      .catch((error: unknown) =>
+        setLoadError(
+          error instanceof Error ? error.message : "Could not load mission plan"
+        )
+      );
+  }, [backendUrl, planId]);
+
+  if (loadError || backendConfigurationError) {
+    return (
+      <main className="min-h-screen flex items-center justify-center p-8">
+        <div className="max-w-lg text-center">
+          <h1 className="text-2xl font-semibold">Could not load mission plan</h1>
+          <p className="mt-3 text-red-400">
+            {loadError || backendConfigurationError}
+          </p>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a className="inline-block mt-5 text-cyan-300 underline" href="/">
+            Return to Edublox
+          </a>
+        </div>
+      </main>
+    );
+  }
 
   if (!plan) {
     return (
@@ -105,6 +182,12 @@ export default function PreviewClient({ planId }: { planId: string }) {
 
   const startLaunch = () => {
     if (launchStep !== null) return;
+    if (!placeId || !/^\d+$/.test(placeId)) {
+      setLaunchError(
+        "Roblox launch is not configured. Set NEXT_PUBLIC_ROBLOX_PLACE_ID in the Butterbase deployment and redeploy."
+      );
+      return;
+    }
     setLaunchStep(0);
     LAUNCHING_STEPS.forEach((_, i) => {
       if (i > 0) setTimeout(() => setLaunchStep(i), i * STEP_MS);
@@ -155,7 +238,7 @@ export default function PreviewClient({ planId }: { planId: string }) {
         <section className="mt-8">
           <h2 className="text-xl font-semibold mb-2">Missions:</h2>
           <ol className="space-y-3">
-            {plan.missions.map((m: any) => (
+            {plan.missions.map((m) => (
               <li
                 key={m.mission_id}
                 className="p-4 bg-slate-900 border border-indigo-900 rounded-lg shadow-sm"
@@ -173,7 +256,7 @@ export default function PreviewClient({ planId }: { planId: string }) {
                   <div className="text-sm text-slate-400 mt-1">
                     Push:{" "}
                     {m.boxes
-                      .map((b: any) => `${b.label} (${b.mass_kg} kg)`)
+                      ?.map((b) => `${b.label} (${b.mass_kg} kg)`)
                       .join(" · ")}{" "}
                     — ends with a 1-question quiz
                   </div>
@@ -227,6 +310,11 @@ export default function PreviewClient({ planId }: { planId: string }) {
         >
           Launch in Roblox
         </button>
+        {launchError && (
+          <p className="mt-3 text-center text-sm text-red-400" role="alert">
+            {launchError}
+          </p>
+        )}
       </div>
     </main>
   );

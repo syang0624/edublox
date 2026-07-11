@@ -110,6 +110,17 @@ NEXT_PUBLIC_BACKEND_URL=<backend url>
 NEXT_PUBLIC_ROBLOX_PLACE_ID=<published place id>
 ```
 
+For Butterbase, set both variables in the frontend deployment **before**
+building or redeploying. Next.js compiles `NEXT_PUBLIC_*` values into the
+browser bundle, so changing them after uploading `web/out` does not update the
+site. The backend URL must be public HTTPS (not `localhost`), and the backend's
+`ALLOWED_ORIGIN` must exactly match the Butterbase frontend origin.
+
+The static deployment opens plans through
+`/preview/?plan_id=<plan id>`. Keeping the plan ID in the query string lets one
+exported preview page handle newly generated plans without requiring a server
+route for every ID.
+
 ```bash
 cd web && npm install && npm run dev   # localhost:3000
 ```
