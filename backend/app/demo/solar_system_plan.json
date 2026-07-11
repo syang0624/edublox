@@ -1,0 +1,45 @@
+{
+    "plan_id": "demo_solar_system",
+    "title": "Voyage Across the Solar System",
+    "topic": "The Solar System",
+    "objectives": [
+        "Identify the eight planets of the solar system in order from the Sun",
+        "Explain why the inner planets are rocky and the outer planets are gas giants",
+        "Describe what keeps the planets in orbit around the Sun"
+    ],
+    "missions": [
+        {
+            "type": "dialogue",
+            "mission_id": "m1",
+            "location": "orbital_station",
+            "npc_name": "Commander Nova",
+            "npc_persona": "A warm, curious station commander who loves astronomy and speaks in short, encouraging sentences. Her knowledge covers the planets of the solar system and the Sun's gravity.",
+            "opening_line": "Welcome aboard, cadet! Our star charts glitched and one fact needs re-entering: what keeps all eight planets circling the Sun instead of drifting off into space?",
+            "required_question": "What force keeps the planets in orbit around the Sun?",
+            "correct_answer_hints": [
+                "gravity",
+                "gravitational pull",
+                "the sun's gravity",
+                "gravitational force"
+            ],
+            "success_line": "That's it — gravity! The Sun's pull keeps the whole solar system together. Star charts restored, cadet!",
+            "max_attempts": 3
+        },
+        {
+            "type": "puzzle",
+            "mission_id": "m2",
+            "location": "alien_planet",
+            "prompt": "Restore the research log: arrange the planets in order from closest to the Sun to farthest.",
+            "items": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn"],
+            "correct_order": [0, 1, 2, 3, 4, 5]
+        },
+        {
+            "type": "exploration",
+            "mission_id": "m3",
+            "location": "asteroid_field",
+            "prompt": "Scan 3 objects a solar-system scientist would use or study: the telescope, the star map, and the comet fragment.",
+            "targets": ["telescope", "star_map", "comet_fragment"],
+            "hint": "Comets are icy leftovers from when the solar system formed — look for the glowing shard."
+        }
+    ]
+}
