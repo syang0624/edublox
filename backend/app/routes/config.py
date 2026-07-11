@@ -13,4 +13,8 @@ def get_config(plan_id: str = Query(...)):
     except KeyError:
         raise HTTPException(404, "plan_id not found")
     session_id = storage.create_session(plan_id)
-    return ConfigResponse(plan=plan, session_id=session_id)
+    return ConfigResponse(
+        plan=plan,
+        session_id=session_id,
+        learner_id=storage.get_session_learner(session_id),
+    )

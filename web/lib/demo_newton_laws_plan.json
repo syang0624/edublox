@@ -1,0 +1,60 @@
+{
+    "plan_id": "demo_newton_laws",
+    "title": "Operation Cosmic Motion",
+    "topic": "Newton's Laws of Motion",
+    "objectives": [
+        "Explain Newton's first law: objects keep moving (or stay still) unless a force acts on them",
+        "Describe how force, mass, and acceleration are related (Newton's second law)",
+        "Identify action-reaction force pairs in rocket launches and everyday motion"
+    ],
+    "missions": [
+        {
+            "type": "dialogue",
+            "mission_id": "m1",
+            "location": "orbital_station",
+            "npc_name": "Chief Engineer Vega",
+            "npc_persona": "A hands-on, upbeat ship engineer who explains physics with sports and vehicle examples. Her knowledge covers Newton's three laws of motion, inertia, force, mass, and acceleration.",
+            "opening_line": "Cadet, you already proved gravity holds this system together — now a trickier one. I cut our engines a minute ago, yet we're still gliding at full speed. Nothing is pushing us. Why haven't we stopped?",
+            "required_question": "Why does the ship keep moving through space after the engines shut off?",
+            "correct_answer_hints": [
+                "inertia",
+                "first law",
+                "objects in motion stay in motion",
+                "no friction in space",
+                "no force to stop it"
+            ],
+            "success_line": "Exactly — inertia! Newton's first law: with no force to slow us, we just keep cruising. You're thinking like an engineer, cadet!",
+            "max_attempts": 3
+        },
+        {
+            "type": "simulation",
+            "mission_id": "m2",
+            "location": "alien_planet",
+            "prompt": "Cargo bay test! Push each crate with the same force and watch the speed gauge — then answer the flight computer's quiz.",
+            "boxes": [
+                {"label": "Light Crate", "mass_kg": 10},
+                {"label": "Medium Crate", "mass_kg": 50},
+                {"label": "Heavy Crate", "mass_kg": 100}
+            ],
+            "quiz": {
+                "question": "You pushed every crate with the same force. Why did the Light Crate speed up the most?",
+                "choices": [
+                    "Lighter objects always move by themselves",
+                    "Same force on less mass means more acceleration (F = ma)",
+                    "The heavy crate was glued to the floor",
+                    "Gravity pushes lighter things forward"
+                ],
+                "correct_index": 1,
+                "explanation": "Newton's second law: acceleration = force ÷ mass. With the same push, the 10 kg crate accelerates ten times more than the 100 kg one — exactly what your speed gauge showed."
+            }
+        },
+        {
+            "type": "exploration",
+            "mission_id": "m3",
+            "location": "asteroid_field",
+            "prompt": "Scan 3 machines that only work because of Newton's laws: the rover (its wheels push back on the ground to roll forward), the satellite (inertia keeps it circling instead of stopping), and the energy core (it powers the thrust that accelerates our ship).",
+            "targets": ["rover", "satellite", "energy_core"],
+            "hint": "Every push has an equal push back — look for the machines that move, orbit, or power motion."
+        }
+    ]
+}

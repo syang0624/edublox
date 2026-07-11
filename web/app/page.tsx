@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { uploadPdf, generatePlan } from "@/lib/api";
 
 export default function Home() {
@@ -38,23 +39,36 @@ export default function Home() {
         </p>
 
         {status === "idle" && (
-          <label className="block border-2 border-dashed border-indigo-400 rounded-xl p-12 cursor-pointer hover:bg-indigo-950 transition">
-            <input
-              type="file"
-              accept="application/pdf"
-              className="hidden"
-              onChange={(e) =>
-                e.target.files?.[0] && handleFile(e.target.files[0])
-              }
-            />
-            <div className="text-lg">
-              Drop your PDF here, or click to browse
+          <>
+            <label className="block border-2 border-dashed border-indigo-400 rounded-xl p-12 cursor-pointer hover:bg-indigo-950 transition">
+              <input
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                onChange={(e) =>
+                  e.target.files?.[0] && handleFile(e.target.files[0])
+                }
+              />
+              <div className="text-lg">
+                Drop your PDF here, or click to browse
+              </div>
+              <div className="text-sm text-slate-400 mt-2">
+                Max 25 MB &middot; Any school subject &middot; Learn by
+                playing
+              </div>
+            </label>
+
+            <Link
+              href="/preview/demo_newton_laws"
+              prefetch
+              className="mt-6 block w-full bg-slate-800 border border-cyan-700 hover:bg-slate-700 text-cyan-200 font-semibold py-3 rounded-xl transition"
+            >
+              ▶ Demo: Newton&apos;s Laws of Motion
+            </Link>
+            <div className="text-xs text-slate-500 mt-2">
+              Personalized mission plan for Kai (11) — no upload needed
             </div>
-            <div className="text-sm text-slate-400 mt-2">
-              Max 25 MB &middot; Any school subject &middot; Learn by
-              playing
-            </div>
-          </label>
+          </>
         )}
 
         {status === "uploading" && (

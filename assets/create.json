@@ -1,0 +1,76 @@
+{
+  "learner": {
+    "user_id": "kai_tanaka",
+    "display_name": "Kai Tanaka",
+    "age": 11,
+    "grade": "6th grade science",
+    "note_for_builders": "Presentation persona for the Newton's-laws demo (plan_id demo_newton_laws is seeded for him). Cross-session hooks embedded on purpose: (1) MASTERED in the solar-system Roblox missions: gravity holds orbits + planet order — the Newton plan must build on this, not re-test it; (2) MISCONCEPTIONS: 'heavier things fall faster' (W1) and 'moving things just run out of push' (W4) — Newton's 1st/2nd laws attack both; (3) PROFILE: skateboarder, learns through motion/sports analogies, gets fidgety during long reading (behavior_signal in W2), engages hard when asked 'why'; (4) W3 curiosity hook: asked why planets don't just fly off or crash into the Sun — inertia is the literal answer, which the demo_newton_laws dialogue mission opens with; (5) W5 F=ma hook: noticed that pushing his cousin on his board with the same push barely sped up — the crate-push simulation mission (m2) is the direct payoff, and he literally asked 'is there a way to calculate how much slower it gets'. Demo tip: open the preview page's memory panel first ('what the tutor remembers'), then show Chief Engineer Vega's opening line nodding to his gravity mastery."
+  },
+  "sessions": [
+    {
+      "user_id": "kai_tanaka",
+      "session_id": "kai_w1_intro_2026_06_17",
+      "messages": [
+        {"role": "assistant", "timestamp": 1781719200000, "content": "Hey Kai! I'm your science tutor. Before we start — what do you like doing outside school?"},
+        {"role": "user", "timestamp": 1781719230000, "content": "skateboarding mostly. i skate every day after school with my friends"},
+        {"role": "assistant", "timestamp": 1781719245000, "content": "A skater — perfect, physics is basically your sport in equations. Quick one: if you drop your skateboard and a coin at the same time, which hits the ground first?"},
+        {"role": "user", "timestamp": 1781719290000, "content": "the skateboard obviously, its way heavier"},
+        {"role": "assistant", "timestamp": 1781719310000, "content": "That's what almost everyone says! Actually they land together — heaviness doesn't make things fall faster. We'll test that one day. What about space stuff, into that at all?"},
+        {"role": "user", "timestamp": 1781719350000, "content": "yeah kinda. rockets are cool. reading long stuff about it is boring tho, i'd rather just do things"},
+        {"role": "assistant", "timestamp": 1781719370000, "content": "Deal — less reading, more doing. Next time we're trying a space game where you learn by playing missions."}
+      ]
+    },
+    {
+      "user_id": "kai_tanaka",
+      "session_id": "kai_w2_roblox_solar_2026_06_24",
+      "messages": [
+        {"role": "assistant", "timestamp": 1782327600000, "content": "Welcome aboard, cadet! Our star charts glitched and one fact needs re-entering: what keeps all eight planets circling the Sun instead of drifting off into space?"},
+        {"role": "user", "timestamp": 1782327650000, "content": "umm magnets?"},
+        {"role": "assistant", "timestamp": 1782327665000, "content": "Good guess, cadet, but our sensors say no magnets involved. Think about what pulls you back down when you ollie on your board."},
+        {"role": "user", "timestamp": 1782327710000, "content": "oh gravity! the suns gravity pulls the planets"},
+        {"role": "assistant", "timestamp": 1782327725000, "content": "That's it — gravity! The Sun's pull keeps the whole solar system together. Star charts restored, cadet!"},
+        {"role": "assistant", "timestamp": 1782327900000, "content": "The learner completed the question \"What force keeps the planets in orbit around the Sun?\" (topic: The Solar System). Evidence: {'attempts': 2, 'answer': 'gravity, the suns gravity pulls the planets'}"},
+        {"role": "assistant", "timestamp": 1782328200000, "content": "The learner submitted an answer to the ordering puzzle \"Restore the research log: arrange the planets in order from closest to the Sun to farthest.\" (items: Mercury, Venus, Earth, Mars, Jupiter, Saturn) (topic: The Solar System): {'submitted_order': ['Mercury', 'Venus', 'Earth', 'Mars', 'Saturn', 'Jupiter'], 'correct': false}"},
+        {"role": "assistant", "timestamp": 1782328260000, "content": "Engagement observation while the learner worked on the ordering puzzle \"Restore the research log\" (topic: The Solar System): player idled for 75 seconds reading the mission text, then wandered away from the puzzle table twice before coming back"},
+        {"role": "assistant", "timestamp": 1782328500000, "content": "The learner completed the ordering puzzle \"Restore the research log: arrange the planets in order from closest to the Sun to farthest.\" (topic: The Solar System). Evidence: {'attempts': 2, 'note': 'mixed up Jupiter and Saturn on the first try, corrected it himself'}"}
+      ]
+    },
+    {
+      "user_id": "kai_tanaka",
+      "session_id": "kai_w3_roblox_solar_2026_07_01",
+      "messages": [
+        {"role": "assistant", "timestamp": 1782932400000, "content": "Back again, cadet! The charts scrambled overnight — can you restore the planet order one more time?"},
+        {"role": "assistant", "timestamp": 1782932700000, "content": "The learner completed the ordering puzzle \"Restore the research log: arrange the planets in order from closest to the Sun to farthest.\" (topic: The Solar System). Evidence: {'attempts': 1, 'time_seconds': 41, 'note': 'first try, no hesitation — planet order is solid now'}"},
+        {"role": "user", "timestamp": 1782932760000, "content": "wait i have a question. if the sun is pulling the planets the whole time why dont they just crash into it? or fly off"},
+        {"role": "assistant", "timestamp": 1782932780000, "content": "Now THAT is a commander-level question, cadet. The planets are moving sideways so fast that they keep missing the Sun — the pull bends their path into a circle. Why moving things keep moving like that is a whole new mission I'm saving for you."},
+        {"role": "user", "timestamp": 1782932830000, "content": "ok that's actually sick. like carving a bowl on my board and gravity keeps pulling me down the curve"},
+        {"role": "assistant", "timestamp": 1782932850000, "content": "Exactly like that, cadet. You keep your speed through the carve — hold that thought for our next mission."},
+        {"role": "assistant", "timestamp": 1782933100000, "content": "The learner completed the exploration task \"Scan 3 objects a solar-system scientist would use or study\" (topic: The Solar System). Evidence: {'targets_found': ['telescope', 'star_map', 'comet_fragment'], 'time_seconds': 190}"}
+      ]
+    },
+    {
+      "user_id": "kai_tanaka",
+      "session_id": "kai_w4_chat_2026_07_08",
+      "messages": [
+        {"role": "assistant", "timestamp": 1783540800000, "content": "Hey Kai, quick check-in before the next space mission. How's the skating going?"},
+        {"role": "user", "timestamp": 1783540860000, "content": "good but i was thinking. when i stop pushing my board it always stops rolling after a bit. so moving stuff just runs out of push right?"},
+        {"role": "assistant", "timestamp": 1783540890000, "content": "I love that you noticed that — but it's a trap almost everyone falls into! Your board doesn't run out of push. Something is secretly grabbing it. Any idea what?"},
+        {"role": "user", "timestamp": 1783540940000, "content": "the ground? like rough ground totally kills your speed, smooth concrete you roll forever"},
+        {"role": "assistant", "timestamp": 1783540960000, "content": "You basically just discovered friction — and you're one step from Newton's first law: if nothing grabbed your board, it would roll forever. Guess where there's nothing to grab it... space. That's exactly what the next mission is about."},
+        {"role": "user", "timestamp": 1783541010000, "content": "ok now i actually want to do that one"}
+      ]
+    },
+    {
+      "user_id": "kai_tanaka",
+      "session_id": "kai_w5_chat_2026_07_10",
+      "messages": [
+        {"role": "assistant", "timestamp": 1783702800000, "content": "Hey Kai! Last check-in before the big mission. Anything from the skatepark this week?"},
+        {"role": "user", "timestamp": 1783702860000, "content": "yeah so i gave my little cousin a ride on my board. pushing two people is SO much harder, i pushed just as hard and we barely sped up. i thought i was just tired lol"},
+        {"role": "assistant", "timestamp": 1783702890000, "content": "You weren't tired — you were doing physics! Same push, but way more mass on the board, so it speeds up way less. There's a famous rule about exactly that."},
+        {"role": "user", "timestamp": 1783702940000, "content": "so like the push matters AND how heavy the thing is? is there a way to calculate how much slower it gets"},
+        {"role": "assistant", "timestamp": 1783702960000, "content": "There is — one tiny formula covers it, and in your next space mission you'll figure it out yourself by shoving cargo crates around the ship. Light crate, heavy crate, same push. Watch what happens."},
+        {"role": "user", "timestamp": 1783703000000, "content": "ok pushing space boxes sounds fun ngl"}
+      ]
+    }
+  ]
+}

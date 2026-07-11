@@ -131,7 +131,9 @@ roblox/
 | Backend BASE URL for `BackendClient.lua` | **Nori** — get the deployed URL |
 | `/api/config` response shape | **Nori** — returns `{ plan, session_id }` |
 | `/api/npc-chat` request/response | **Nori** — request has session_id, mission_id, npc fields; response has npc_reply + is_correct_answer |
-| `/api/report` event format | **Nori** — event_type values: mission_started, mission_completed, mission_failed, answer_submitted |
+| `/api/report` event format | **Nori** — event_type values: mission_started, mission_completed, mission_failed, answer_submitted, behavior_signal |
+| Behavior signals (optional, big demo win) | **Nori** — POST `/api/report` with `event_type: "behavior_signal"` and `payload: {"summary": "<one-sentence observation>"}`. Aggregate on the Roblox side (idle > 60s, wandering off during a mission, rushing through dialogue, repeated jumping around instead of engaging) and send ONE summary sentence per observation — never raw input events. The NPC sees these live and reacts ("you seem distracted, cadet"), and they flow into EverOS learner memory. |
+| `simulation` mission type (DEMO — plan `demo_newton_laws`, mission m2) | **Nori** — new mission shape: `{ type: "simulation", mission_id, location, prompt, boxes: [{label, mass_kg}], quiz: {question, choices, correct_index, explanation} }`. Roblox side: spawn one pushable crate per `boxes` entry (anchor mass to `mass_kg` so the same push visibly accelerates the light crate more), show `prompt` on the HUD with a speed gauge, and after all crates are pushed show the `quiz` as multiple-choice buttons. Validate the answer CLIENT-side against `correct_index` (it's in the plan config), show `explanation`, then report: `answer_submitted` with `payload: {"question": quiz.question, "chosen": "<choice text>", "correct": true/false}` and `mission_completed`/`mission_failed` with a short evidence payload. These land in EverOS as F=ma learning observations. |
 | Exploration target whitelist | **Nori** — plan_generator only uses the 12 approved tags; scene Parts must be tagged with these same strings |
 
 ## Acceptance Criteria

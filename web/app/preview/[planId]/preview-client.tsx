@@ -1,0 +1,190 @@
+"use client";
+import { useEffect, useState } from "react";
+import demoNewtonPlan from "@/lib/demo_newton_laws_plan.json";
+
+// Pre-baked demo plans render instantly with no backend round-trip —
+// presentation-proof even if the backend is cold. Keep the JSON in sync
+// with backend/app/demo/ (source of truth); learner must match
+// DEMO_PLANS in backend/app/main.py.
+const PREBAKED_PLANS: Record<string, { plan: any; learnerId: string }> = {
+  demo_newton_laws: { plan: demoNewtonPlan, learnerId: "kai_tanaka" },
+};
+
+// Short staged reveal for pre-baked demo plans: the plan is already in the
+// bundle, but the demo reads better with a beat of "generation" while the
+// live EverOS memory fetch runs in parallel.
+const GENERATING_STEPS = [
+  "Reading the learner's memory…",
+  "Personalizing missions to what they've mastered…",
+  "Designing the world…",
+];
+const STEP_MS = 850;
+
+export default function PreviewClient({ planId }: { planId: string }) {
+  const [plan, setPlan] = useState<any>(null);
+  const [memory, setMemory] = useState<Record<string, string> | null>(null);
+  const [genStep, setGenStep] = useState(0);
+  const placeId = process.env.NEXT_PUBLIC_ROBLOX_PLACE_ID;
+  const isDemo = planId in PREBAKED_PLANS;
+
+  useEffect(() => {
+    // Memory reveal: show what EverOS actually remembers about this
+    // learner — the same context the plan generator was given.
+    const fetchMemory = (learnerId: string) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/memory/${learnerId}`
+      )
+        .then((r) => r.json())
+        .then((m) => setMemory(m.memory))
+        .catch(() => {});
+
+    const prebaked = PREBAKED_PLANS[planId];
+    if (prebaked) {
+      fetchMemory(prebaked.learnerId);
+      const timers = GENERATING_STEPS.map((_, i) =>
+        setTimeout(() => setGenStep(i), i * STEP_MS)
+      );
+      timers.push(
+        setTimeout(
+          () => setPlan(prebaked.plan),
+          GENERATING_STEPS.length * STEP_MS
+        )
+      );
+      return () => timers.forEach(clearTimeout);
+    }
+    fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/config?plan_id=${planId}`
+    )
+      .then((r) => r.json())
+      .then((d) => {
+        setPlan(d.plan);
+        if (d.learner_id) fetchMemory(d.learner_id);
+      });
+  }, [planId]);
+
+  if (!plan) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        {isDemo ? (
+          <div className="text-center w-full max-w-sm px-8">
+            <div className="animate-pulse text-xl">
+              {GENERATING_STEPS[genStep]}
+            </div>
+            <div className="mt-6 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-cyan-400 rounded-full transition-all duration-700 ease-out"
+                style={{
+                  width: `${((genStep + 1) / GENERATING_STEPS.length) * 100}%`,
+                }}
+              />
+            </div>
+            <div className="text-sm text-slate-400 mt-3">
+              Powered by EverOS memory
+            </div>
+          </div>
+        ) : (
+          <div className="animate-pulse text-xl">Loading mission plan...</div>
+        )}
+      </main>
+    );
+  }
+
+  const launchData = encodeURIComponent(
+    JSON.stringify({ plan_id: planId })
+  );
+  const launchUrl = `https://www.roblox.com/games/start?placeId=${placeId}&launchData=${launchData}`;
+
+  return (
+    <main className="min-h-screen p-8">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold">{plan.title}</h1>
+        <p className="text-slate-300 mt-1">{plan.topic}</p>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold mb-2">You will learn to:</h2>
+          <ul className="list-disc pl-6 space-y-1">
+            {plan.objectives.map((o: string, i: number) => (
+              <li key={i}>{o}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold mb-2">Missions:</h2>
+          <ol className="space-y-3">
+            {plan.missions.map((m: any) => (
+              <li
+                key={m.mission_id}
+                className="p-4 bg-slate-900 border border-indigo-900 rounded-lg shadow-sm"
+              >
+                <div className="text-sm uppercase text-cyan-300">
+                  {m.type}
+                </div>
+                <div className="font-medium">
+                  {m.type === "dialogue" && `Speak with ${m.npc_name}`}
+                  {m.type === "puzzle" && m.prompt}
+                  {m.type === "exploration" && m.prompt}
+                  {m.type === "simulation" && m.prompt}
+                </div>
+                {m.type === "simulation" && (
+                  <div className="text-sm text-slate-400 mt-1">
+                    Push:{" "}
+                    {m.boxes
+                      .map((b: any) => `${b.label} (${b.mass_kg} kg)`)
+                      .join(" · ")}{" "}
+                    — ends with a 1-question quiz
+                  </div>
+                )}
+                <div className="text-sm text-slate-400">
+                  Location: {m.location.replaceAll("_", " ")}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {memory && Object.values(memory).some((v) => v && v.trim()) && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold mb-2">
+              🧠 What the tutor remembers
+            </h2>
+            <p className="text-sm text-slate-400 mb-3">
+              Recalled from EverOS memory and used to personalize this plan.
+            </p>
+            <div className="space-y-3">
+              {(
+                [
+                  ["mastered", "Already mastered"],
+                  ["struggles", "Still working on"],
+                  ["profile", "How they learn"],
+                ] as const
+              ).map(
+                ([key, label]) =>
+                  memory[key]?.trim() && (
+                    <div
+                      key={key}
+                      className="p-4 bg-slate-900 border border-emerald-900 rounded-lg"
+                    >
+                      <div className="text-sm uppercase text-emerald-300">
+                        {label}
+                      </div>
+                      <p className="text-sm text-slate-300 whitespace-pre-line mt-1">
+                        {memory[key]}
+                      </p>
+                    </div>
+                  )
+              )}
+            </div>
+          </section>
+        )}
+
+        <a
+          href={launchUrl}
+          className="mt-8 block text-center bg-indigo-600 hover:bg-indigo-500 text-white text-xl font-semibold py-4 rounded-xl transition"
+        >
+          Launch in Roblox
+        </a>
+      </div>
+    </main>
+  );
+}

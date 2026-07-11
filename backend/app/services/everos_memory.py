@@ -56,6 +56,37 @@ def format_memory_results(payload: dict) -> str:
     return "\n".join(deduped)[:1500]
 
 
+# The labeled queries behind both plan personalization and the memory
+# reveal panel. Keys are stable labels the web app and prompts rely on.
+LEARNER_RECALL_QUERIES = {
+    "mastered": (
+        "Concepts, facts, and objectives this learner has already mastered "
+        "or answered correctly"
+    ),
+    "struggles": (
+        "Recurring misconceptions, wrong answers, and topics this learner "
+        "struggles with or finds frustrating"
+    ),
+    "profile": (
+        "How this learner likes to learn: interests, engagement patterns, "
+        "attention span, pacing, and what motivates them"
+    ),
+}
+
+
+def recall_many(learner_id: str, queries: dict) -> dict:
+    """Run several labeled recalls in parallel. Returns label -> snippets
+    (empty string per label on failure — same contract as recall())."""
+    if not settings.EVEROS_API_KEY or not queries:
+        return {label: "" for label in queries}
+    with ThreadPoolExecutor(max_workers=len(queries)) as pool:
+        futures = {
+            label: pool.submit(recall, learner_id, query)
+            for label, query in queries.items()
+        }
+        return {label: future.result() for label, future in futures.items()}
+
+
 def recall(learner_id: str, query: str) -> str:
     if not settings.EVEROS_API_KEY:
         return ""

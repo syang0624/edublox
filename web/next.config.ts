@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Static export so the app can be served from Butterbase's static hosting.
+  output: "export",
 };
 
 export default nextConfig;

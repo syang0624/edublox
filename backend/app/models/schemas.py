@@ -6,6 +6,7 @@ class MissionType(str, Enum):
     DIALOGUE = "dialogue"
     PUZZLE = "puzzle"
     EXPLORATION = "exploration"
+    SIMULATION = "simulation"
 
 class DialogueMission(BaseModel):
     type: Literal["dialogue"] = "dialogue"
@@ -35,7 +36,27 @@ class ExplorationMission(BaseModel):
     targets: List[str]                  # object tags in the scene
     hint: Optional[str] = None
 
-Mission = DialogueMission | PuzzleMission | ExplorationMission
+class SimBox(BaseModel):
+    label: str                          # display name, e.g. "Light Crate"
+    mass_kg: float                      # drives the physics + speed gauge
+
+class SimQuiz(BaseModel):
+    question: str
+    choices: List[str]                  # multiple choice, shown as buttons
+    correct_index: int                  # index into choices
+    explanation: str                    # shown after the player answers
+
+class SimulationMission(BaseModel):
+    # Hands-on physics sim: player pushes crates of different masses with
+    # the same force, watches the speed gauge, then answers a quiz.
+    type: Literal["simulation"] = "simulation"
+    mission_id: str
+    location: Literal["orbital_station", "alien_planet", "asteroid_field"]
+    prompt: str                         # on-screen instruction for the sim
+    boxes: List[SimBox]                 # crates to push
+    quiz: SimQuiz                       # end-of-mission check
+
+Mission = DialogueMission | PuzzleMission | ExplorationMission | SimulationMission
 
 class MissionPlan(BaseModel):
     plan_id: str
@@ -56,10 +77,12 @@ class GenerateRequest(BaseModel):
 class GenerateResponse(BaseModel):
     plan_id: str
     plan: MissionPlan
+    recalled_memory: dict = {}          # label -> recalled snippets used to personalize (memory reveal)
 
 class ConfigResponse(BaseModel):
     plan: MissionPlan
     session_id: str                     # unique per launch, used for reporting
+    learner_id: str = "demo_learner"    # lets clients fetch /api/memory/{learner_id}
 
 class NpcChatRequest(BaseModel):
     session_id: str
@@ -77,5 +100,7 @@ class NpcChatResponse(BaseModel):
 class ReportEvent(BaseModel):
     session_id: str
     mission_id: str
-    event_type: Literal["mission_started", "mission_completed", "mission_failed", "answer_submitted"]
+    # behavior_signal: aggregated engagement observation from the Roblox
+    # client (e.g. "idled 90s during puzzle"), never raw input events.
+    event_type: Literal["mission_started", "mission_completed", "mission_failed", "answer_submitted", "behavior_signal"]
     payload: dict = {}

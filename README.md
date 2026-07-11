@@ -58,8 +58,9 @@ FastAPI + Python. All routes under `/api`; canonical data contract in
 | `POST /api/generate` | `upload_id` → validated Mission Plan (recalls learner memory first) |
 | `GET /api/config?plan_id=...` | Plan + fresh `session_id` (Roblox calls on player join) |
 | `POST /api/npc-chat` | In-character NPC reply + `is_correct_answer` signal |
-| `POST /api/report` | Mission events; milestones written to EverOS |
+| `POST /api/report` | Mission events; milestones + behavior signals written to EverOS as concept-level observations |
 | `GET /api/report/{session_id}` | Session progress summary |
+| `GET /api/memory/{learner_id}` | Memory reveal: what EverOS remembers (mastered / struggles / profile) — same recalls the generator sees |
 
 ### Persistence (Butterbase)
 
@@ -116,9 +117,15 @@ cd web && npm install && npm run dev   # localhost:3000
 ## Memory (EverOS)
 
 EverOS stores each Roblox game session's raw transcripts (NPC chat turns +
-mission milestone events) and auto-extracts them into a learner **profile**
-(persistent traits) and **episodic memory** (what happened). Both are
-recalled before plan generation and every NPC reply. Writes happen off the
+concept-level mission observations + engagement `behavior_signal`s) and
+auto-extracts them into a learner **profile** (persistent traits) and
+**episodic memory** (what happened). Three labeled recalls — *mastered*,
+*struggles*, *profile* — run before plan generation, so plans visibly
+progress session over session (mastered concepts aren't re-tested; the NPC's
+opening line nods to last time), and the same recalls power the
+"what the tutor remembers" reveal panel on the web preview page. The NPC
+additionally sees the live session event feed, so it can react mid-session
+to a just-failed puzzle or a distracted player. Writes happen off the
 request path and are flushed so extraction completes; an EverOS outage
 never blocks gameplay.
 
@@ -128,15 +135,26 @@ To start a demo with weeks of realistic history, preload a learner card:
 export EVEROS_API_KEY=<your key>
 backend/.venv/bin/python assets/load_learner.py assets/leo_carter.json
 # Leo, 10 — loves space; great fit for the solar-system demo
+backend/.venv/bin/python assets/load_learner.py assets/create.json
+# Kai, 11 — presentation persona: skateboarder whose Roblox history shows
+# gravity mastered; the seeded Newton's-laws demo plan builds on it
 ```
 
 ## Demo script
 
 See [`storyline/DEMO-WALKTHROUGH.md`](storyline/DEMO-WALKTHROUGH.md).
-Short version: upload `demo/solar_system.pdf` on the web app, preview the
-generated plan, launch into Roblox, complete the three missions, then show
-the session report — and on a second run, point out what the NPC already
-remembers.
+
+**Presentation shortcut:** the web app's home page has a
+"▶ Demo: Newton's Laws of Motion" button that jumps straight to the
+pre-seeded `demo_newton_laws` plan (learner: Kai, from
+`assets/create.json`) — no upload, no LLM call. The preview page's
+"What the tutor remembers" panel shows Kai's recalled history: gravity and
+planet order already mastered in his solar-system Roblox sessions, so the
+Newton plan is the visible next step.
+
+Full flow: upload a study PDF on the web app, preview the generated plan,
+launch into Roblox, complete the three missions, then show the session
+report — and on a second run, point out what the NPC already remembers.
 
 The demo content is the solar system, but nothing is hardcoded to it: any
 school-subject PDF flows through the same upload → generate → play pipeline.

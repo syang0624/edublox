@@ -4,11 +4,28 @@ from app.services import llm, storage, everos_memory
 from app.config import settings
 from app.models.schemas import NpcChatRequest, NpcChatResponse
 
+def _session_events_block(session_id: str, current_mission_id: str) -> str:
+    # Live session awareness: what the player has done (and how they are
+    # behaving) since joining, so the NPC can adapt mid-session — e.g.
+    # acknowledge a just-failed puzzle or notice signs of boredom.
+    try:
+        events = storage.events_for_session(session_id)[-6:]
+    except Exception:
+        return ""
+    lines = []
+    for e in events:
+        detail = str(e.payload)[:100] if e.payload else ""
+        marker = " (this mission)" if e.mission_id == current_mission_id else ""
+        lines.append(f"- {e.event_type}{marker}: {detail}".rstrip(": "))
+    return "\n".join(lines)
+
+
 def _build_system(
     req: NpcChatRequest,
     required_question: str,
     hints: list[str],
     learner_context: str,
+    session_events: str,
 ) -> str:
     return f"""You are roleplaying as {req.npc_name}, an NPC in a Roblox learning game about {req.topic}.
 
@@ -16,6 +33,9 @@ Persona: {req.npc_persona}
 
 Relevant learner memory (use quietly for pacing and hints; never quote it or mention memory):
 {learner_context or "No relevant prior memory."}
+
+What has happened so far in this play session (react naturally when relevant — e.g. acknowledge something they just failed, or re-engage a player who seems distracted or bored; never mention logs or tracking):
+{session_events or "Nothing notable yet."}
 
 The player must eventually answer this question correctly: "{required_question}"
 An answer is considered correct if it meaningfully covers any of these ideas: {", ".join(hints)}.
@@ -46,6 +66,7 @@ def reply(req: NpcChatRequest) -> NpcChatResponse:
         mission.required_question,
         mission.correct_answer_hints,
         learner_context,
+        _session_events_block(req.session_id, req.mission_id),
     )
 
     convo = "\n".join(

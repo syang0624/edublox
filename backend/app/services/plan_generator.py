@@ -42,6 +42,8 @@ Rules for the whole plan:
 1. All content must be answerable from the source material. Do not add facts not in the material.
 2. Use learner memory only to personalize examples, hints, pacing, and likely review points. Never treat memory as the source of academic truth and never expose private memory verbatim.
 3. If memory identifies a recurring misconception, address it in one mission without lowering the learning objective.
+3b. Progression: if the ALREADY MASTERED memory shows the learner has proven a concept from this material, do NOT re-test it at the same difficulty — go one step deeper on it (a why/how question instead of a what question) or pick a different concept from the source. Session over session, the plan must visibly advance.
+3c. Continuity: if any learner memory exists, the dialogue mission's opening_line must include one short, natural in-character nod to their history (what they did well or struggled with last time, or an interest of theirs) — one clause, no verbatim quotes, no mention of "memory" or "data".
 4. Language must be appropriate for ages 9-12.
 5. Keep all presentation details in the Universe setting. Do not introduce unrelated historical-world scenery or props.
 6. Do not invent target tags outside the whitelist.
@@ -86,14 +88,34 @@ The JSON must match this exact schema:
 }
 """
 
-def generate_plan(source_text: str, learner_context: str = "") -> MissionPlan:
+def _format_memory(recalled: dict) -> str:
+    # Labeled sections so the model can tell durable mastery/struggle
+    # signals apart from general profile traits.
+    sections = {
+        "mastered": "ALREADY MASTERED (do not re-test at the same difficulty; build on it)",
+        "struggles": "KNOWN STRUGGLES AND MISCONCEPTIONS (target one in a mission)",
+        "profile": "LEARNER PROFILE (interests, pacing, engagement)",
+    }
+    parts = [
+        f"{heading}:\n{recalled[label].strip()}"
+        for label, heading in sections.items()
+        if recalled.get(label, "").strip()
+    ]
+    for label, text in recalled.items():
+        if label not in sections and text.strip():
+            parts.append(f"{label.upper()}:\n{text.strip()}")
+    return "\n\n".join(parts)
+
+
+def generate_plan(source_text: str, recalled_memory: dict | None = None) -> MissionPlan:
+    memory_block = _format_memory(recalled_memory or {})
     user = f"""SOURCE MATERIAL:
 
 {source_text}
 
 RELEVANT LEARNER MEMORY (may be empty; personalization only):
 
-{learner_context or "No prior learner memory available."}
+{memory_block or "No prior learner memory available."}
 
 Now output the Mission Plan JSON."""
     raw = llm.complete(
