@@ -9,6 +9,10 @@ mastered.
 
 Built for the **EverMind Challenge · Reinvented Education Hackathon**.
 
+## Demo video
+
+[![Watch the Edublox demo](https://img.youtube.com/vi/dZWGGUabQp4/hqdefault.jpg)](https://youtu.be/dZWGGUabQp4)
+
 ## How it works
 
 ```
