@@ -15,14 +15,14 @@ A four-part system with a persistent learner-memory layer:
 
 **The presentation theme is Universe only: space station, alien planet, and asteroid field. Source PDFs may cover any school subject, but every mission is presented through this cosmic setting. Do not introduce unrelated historical-world locations, characters, props, colors, or copy.**
 
-**Demo scenario: the demo learner is studying the solar system.** The scripted demo uploads a solar-system study PDF, and the backend seeds a pre-built solar-system Mission Plan (fixed `plan_id: "demo_solar_system"`, see 4.15) at startup as the Roblox launch fallback. This is demo *content* only — the pipeline itself stays fully generic and must work unchanged for any other subject PDF. Nothing solar-system-specific may be hardcoded into upload, extraction, plan generation, NPC chat, or Roblox logic.
+**Demo scenario: the demo learner is studying the solar system.** The scripted demo uploads a solar-system study PDF, and the backend seeds a pre-built solar-system Mission Plan (fixed `plan_id: "demo_solar_system"`, see 4.15) at startup as the Roblox launch fallback. This is demo _content_ only — the pipeline itself stays fully generic and must work unchanged for any other subject PDF. Nothing solar-system-specific may be hardcoded into upload, extraction, plan generation, NPC chat, or Roblox logic.
 
 ---
 
 ## 1. Repository layout
 
 ```
-learning-universe/
+edublox/
 ├── web/                          # Next.js app
 │   ├── app/
 │   │   ├── page.tsx              # Upload page
@@ -834,44 +834,49 @@ The scripted demo has the learner studying the solar system. So the Roblox fallb
 
 ```json
 {
-  "plan_id": "demo_solar_system",
-  "title": "Voyage Across the Solar System",
-  "topic": "The Solar System",
-  "objectives": [
-    "Identify the eight planets of the solar system in order from the Sun",
-    "Explain why the inner planets are rocky and the outer planets are gas giants",
-    "Describe what keeps the planets in orbit around the Sun"
-  ],
-  "missions": [
-    {
-      "type": "dialogue",
-      "mission_id": "m1",
-      "location": "orbital_station",
-      "npc_name": "Commander Nova",
-      "npc_persona": "A warm, curious station commander who loves astronomy and speaks in short, encouraging sentences. Her knowledge covers the planets of the solar system and the Sun's gravity.",
-      "opening_line": "Welcome aboard, cadet! Our star charts glitched and one fact needs re-entering: what keeps all eight planets circling the Sun instead of drifting off into space?",
-      "required_question": "What force keeps the planets in orbit around the Sun?",
-      "correct_answer_hints": ["gravity", "gravitational pull", "the sun's gravity", "gravitational force"],
-      "success_line": "That's it — gravity! The Sun's pull keeps the whole solar system together. Star charts restored, cadet!",
-      "max_attempts": 3
-    },
-    {
-      "type": "puzzle",
-      "mission_id": "m2",
-      "location": "alien_planet",
-      "prompt": "Restore the research log: arrange the planets in order from closest to the Sun to farthest.",
-      "items": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn"],
-      "correct_order": [0, 1, 2, 3, 4, 5]
-    },
-    {
-      "type": "exploration",
-      "mission_id": "m3",
-      "location": "asteroid_field",
-      "prompt": "Scan 3 objects a solar-system scientist would use or study: the telescope, the star map, and the comet fragment.",
-      "targets": ["telescope", "star_map", "comet_fragment"],
-      "hint": "Comets are icy leftovers from when the solar system formed — look for the glowing shard."
-    }
-  ]
+    "plan_id": "demo_solar_system",
+    "title": "Voyage Across the Solar System",
+    "topic": "The Solar System",
+    "objectives": [
+        "Identify the eight planets of the solar system in order from the Sun",
+        "Explain why the inner planets are rocky and the outer planets are gas giants",
+        "Describe what keeps the planets in orbit around the Sun"
+    ],
+    "missions": [
+        {
+            "type": "dialogue",
+            "mission_id": "m1",
+            "location": "orbital_station",
+            "npc_name": "Commander Nova",
+            "npc_persona": "A warm, curious station commander who loves astronomy and speaks in short, encouraging sentences. Her knowledge covers the planets of the solar system and the Sun's gravity.",
+            "opening_line": "Welcome aboard, cadet! Our star charts glitched and one fact needs re-entering: what keeps all eight planets circling the Sun instead of drifting off into space?",
+            "required_question": "What force keeps the planets in orbit around the Sun?",
+            "correct_answer_hints": [
+                "gravity",
+                "gravitational pull",
+                "the sun's gravity",
+                "gravitational force"
+            ],
+            "success_line": "That's it — gravity! The Sun's pull keeps the whole solar system together. Star charts restored, cadet!",
+            "max_attempts": 3
+        },
+        {
+            "type": "puzzle",
+            "mission_id": "m2",
+            "location": "alien_planet",
+            "prompt": "Restore the research log: arrange the planets in order from closest to the Sun to farthest.",
+            "items": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn"],
+            "correct_order": [0, 1, 2, 3, 4, 5]
+        },
+        {
+            "type": "exploration",
+            "mission_id": "m3",
+            "location": "asteroid_field",
+            "prompt": "Scan 3 objects a solar-system scientist would use or study: the telescope, the star map, and the comet fragment.",
+            "targets": ["telescope", "star_map", "comet_fragment"],
+            "hint": "Comets are icy leftovers from when the solar system formed — look for the glowing shard."
+        }
+    ]
 }
 ```
 
@@ -947,7 +952,8 @@ export default function Home() {
             <div className="max-w-xl w-full text-center">
                 <h1 className="text-4xl font-bold mb-2">Learning Universe</h1>
                 <p className="text-slate-300 mb-8">
-                    Upload a study PDF. We'll turn it into a personalized cosmic Roblox mission.
+                    Upload a study PDF. We'll turn it into a personalized cosmic
+                    Roblox mission.
                 </p>
 
                 {status === "idle" && (
@@ -965,7 +971,8 @@ export default function Home() {
                             Drop your PDF here, or click to browse
                         </div>
                         <div className="text-sm text-slate-400 mt-2">
-                            Max 25MB · Any school subject · Universe-themed missions
+                            Max 25MB · Any school subject · Universe-themed
+                            missions
                         </div>
                     </label>
                 )}
@@ -1624,8 +1631,8 @@ In `MissionRouter.server.lua`, when starting a dialogue mission, spawn a Model i
 1. Backend `/health` returns `{ ok: true }`.
 2. Upload the solar-system demo PDF → returns `upload_id` and 500-char preview.
 3. Generate → returns a valid plan with 3 objectives + 3 missions of distinct types.
-3a. Repeat steps 2-3 with a PDF on a different subject (e.g., a biology or history chapter) → same pipeline produces a valid plan with no code changes. The pipeline is generic; solar system is only the demo content.
-3b. Join the Roblox place with no launchData → the seeded `demo_solar_system` plan loads and is playable.
+   3a. Repeat steps 2-3 with a PDF on a different subject (e.g., a biology or history chapter) → same pipeline produces a valid plan with no code changes. The pipeline is generic; solar system is only the demo content.
+   3b. Join the Roblox place with no launchData → the seeded `demo_solar_system` plan loads and is playable.
 4. Open preview page → all fields render.
 5. Click Launch → Roblox opens the place.
 6. In Studio, run once and confirm HTTP call returns a plan.
@@ -1659,7 +1666,7 @@ Vendor references:
 
 1. Backend generates a **valid, schema-conformant Mission Plan JSON** every time. Retry on JSON parse failure once, then error clearly.
 2. Roblox place **loads a plan from launchData** and falls back to the seeded `demo_solar_system` plan (4.15) if launchData is missing.
-2a. The pipeline is **subject-agnostic**: solar system exists only as demo content (`demo/solar_system.pdf` + the seeded plan). Any school-subject PDF must produce a playable plan through the identical code path.
+   2a. The pipeline is **subject-agnostic**: solar system exists only as demo content (`demo/solar_system.pdf` + the seeded plan). Any school-subject PDF must produce a playable plan through the identical code path.
 3. Dialogue NPC produces **a correct-answer signal** the server can act on. The `[CORRECT]`/`correct:true` signal from the LLM is the source of truth.
 4. Puzzle validation is **server-side**. Client never decides success.
 5. HttpService calls are **wrapped in pcall**. Any failure logs and does not crash the player experience.
